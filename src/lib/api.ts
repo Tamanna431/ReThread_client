@@ -25,6 +25,7 @@ api.interceptors.request.use(
 export const authAPI = {
   register: (data: any) => api.post('/auth/register', data),
   login: (data: any) => api.post('/auth/login', data),
+    googleAuth: (credential: string) => api.post('/auth/google', { credential }),
   getProfile: (id: string) => api.get(`/auth/profile/${id}`),
 };
 
@@ -37,3 +38,8 @@ export const itemAPI = {
   delete: (id: string) => api.delete(`/items/${id}`),
   getSellerItems: () => api.get('/items/seller/my-items'),
 };
+// AI APIs
+   export const aiAPI = {
+     analyzeListing: (data: { title: string; shortDesc: string }) => api.post('/ai/analyze-listing', data),
+     getRecommendations: (itemId: string) => api.get(`/ai/recommendations/${itemId}`),
+   };

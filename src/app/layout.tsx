@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import QueryProvider from "@/components/QueryProvider";
+import AIChatbot from "@/components/AIChatbot"; // ✅ Add this
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -23,11 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${playfair.variable} ${inter.variable} font-body bg-oat text-gray-800 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300`}
-      >
-        {children}
+    <html lang="en">
+      <head>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+      </head>
+      <body className={`${playfair.variable} ${inter.variable} font-body bg-oat text-gray-800`}>
+        <QueryProvider>
+          {children}
+          <AIChatbot /> {/* ✅ Add this */}
+        </QueryProvider>
       </body>
     </html>
   );

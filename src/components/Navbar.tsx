@@ -30,32 +30,32 @@ export default function Navbar() {
             <span className="font-heading text-2xl font-bold">ReThread</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="hover:text-terracotta transition">
+          {/* Desktop Navigation - Moved closer to logo */}
+          <div className="hidden lg:flex items-center space-x-6 ml-12">
+            <Link href="/" className="hover:text-terracotta transition px-3 py-2">
               Home
             </Link>
-            <Link href="/explore" className="hover:text-terracotta transition">
+            <Link href="/explore" className="hover:text-terracotta transition px-3 py-2">
               Explore
             </Link>
-            <Link href="/about" className="hover:text-terracotta transition">
+            <Link href="/about" className="hover:text-terracotta transition px-3 py-2">
               About
             </Link>
-            <Link href="/contact" className="hover:text-terracotta transition">
+            <Link href="/contact" className="hover:text-terracotta transition px-3 py-2">
               Contact
             </Link>
 
             {isLoggedIn ? (
               <>
-                <Link href="/items/add" className="hover:text-terracotta transition">
+                <Link href="/items/add" className="hover:text-terracotta transition px-3 py-2">
                   Add Item
                 </Link>
-                <Link href="/items/manage" className="hover:text-terracotta transition">
+                <Link href="/items/manage" className="hover:text-terracotta transition px-3 py-2">
                   Manage
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-1 hover:text-terracotta transition"
+                  className="flex items-center space-x-1 hover:text-terracotta transition px-3 py-2"
                 >
                   <LogOut className="w-5 h-5" />
                   <span>Logout</span>
@@ -63,12 +63,12 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/login" className="hover:text-terracotta transition">
+                <Link href="/login" className="hover:text-terracotta transition px-3 py-2">
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  className="bg-terracotta hover:bg-terracotta-dark px-4 py-2 rounded-lg font-semibold transition"
+                  className="bg-terracotta hover:bg-terracotta-dark px-5 py-2 rounded-lg font-semibold transition ml-2"
                 >
                   Sign Up
                 </Link>
@@ -78,7 +78,7 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -87,44 +87,44 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-700">
-            <div className="flex flex-col space-y-4">
-              <Link href="/" className="hover:text-terracotta transition">
+          <div className="lg:hidden py-4 border-t border-gray-700">
+            <div className="flex flex-col space-y-2">
+              <Link href="/" className="hover:text-terracotta transition px-6 py-2">
                 Home
               </Link>
-              <Link href="/explore" className="hover:text-terracotta transition">
+              <Link href="/explore" className="hover:text-terracotta transition px-5 py-2">
                 Explore
               </Link>
-              <Link href="/about" className="hover:text-terracotta transition">
+              <Link href="/about" className="hover:text-terracotta transition px-4 py-2">
                 About
               </Link>
-              <Link href="/contact" className="hover:text-terracotta transition">
+              <Link href="/contact" className="hover:text-terracotta transition px-3 py-2">
                 Contact
               </Link>
 
               {isLoggedIn ? (
                 <>
-                  <Link href="/items/add" className="hover:text-terracotta transition">
+                  <Link href="/items/add" className="hover:text-terracotta transition px-3 py-2">
                     Add Item
                   </Link>
-                  <Link href="/items/manage" className="hover:text-terracotta transition">
+                  <Link href="/items/manage" className="hover:text-terracotta transition px-3 py-2">
                     Manage
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="text-left hover:text-terracotta transition"
+                    className="text-left hover:text-terracotta transition px-3 py-2"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="hover:text-terracotta transition">
+                  <Link href="/login" className="hover:text-terracotta transition px-3 py-2">
                     Login
                   </Link>
                   <Link
                     href="/register"
-                    className="bg-terracotta hover:bg-terracotta-dark px-4 py-2 rounded-lg font-semibold transition text-center"
+                    className="bg-terracotta hover:bg-terracotta-dark px-5 py-2 rounded-lg font-semibold transition text-center mx-3"
                   >
                     Sign Up
                   </Link>
