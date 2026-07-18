@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={`${playfair.variable} ${inter.variable} font-body bg-oat text-gray-800`}>
         <QueryProvider>
           {children}
-          <AIChatbot /> {/* ✅ Add this */}
+          <AIChatbot /> {/* ✅ Add tis */}
         </QueryProvider>
       </body>
     </html>
