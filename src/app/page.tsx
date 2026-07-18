@@ -219,7 +219,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 6: Testimonials */}
+      {/* Section 6: Testimonial */}
       <section className="py-20 md:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
