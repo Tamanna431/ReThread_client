@@ -116,7 +116,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 4: How It Works */}
+      {/* Sections 4: How It Works */}
       <section className="py-20 md:py-28 bg-oat">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
