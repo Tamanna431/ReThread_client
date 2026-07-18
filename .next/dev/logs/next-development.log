@@ -388,3 +388,6 @@
 {"timestamp":"00:25:15.451","source":"Browser","level":"ERROR","message":"[turbopack-node]/transforms/postcss.ts:12:1\nExport default doesn't exist in target module\n  10 | import postcss from '@vercel/turbopack/postcss'\n  11 | // @ts-ignore\n> 12 | import importedConfig from 'CONFIG'\n     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  13 | import { getReadEnvVariables, toPath, type TransformIpc } from './transforms'\n  14 |\n  15 | let processor: Processor | undefined\n\nThe export default was not found in module [project]/postcss.config.mjs [postcss] (ecmascript).\nThe module has no exports at all.\nAll exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist. \"\""}
 {"timestamp":"00:25:17.638","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}
 {"timestamp":"00:26:23.469","source":"Server","level":"LOG","message":"✓ Compiled in 3.9s"}
+{"timestamp":"00:42:53.945","source":"Server","level":"LOG","message":"✓ Compiled in 727ms"}
+{"timestamp":"00:43:07.794","source":"Server","level":"LOG","message":"✓ Compiled in 149ms"}
+{"timestamp":"00:43:50.324","source":"Server","level":"LOG","message":"✓ Compiled in 6.9s"}
