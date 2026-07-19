@@ -4,7 +4,19 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { itemAPI, aiAPI } from '@/lib/api';
 import Navbar from '@/components/Navbar';
-import { Sparkles, Upload, AlertCircle, CheckCircle, Loader2, Tag } from 'lucide-react';
+import { Sparkles, Upload, AlertCircle, CheckCircle, Loader2, Tag, RotateCcw, Settings2 } from 'lucide-react';
+
+const TEMPLATES = [
+  { value: 'vintage-expert', label: '🏛️ Vintage Expert', desc: 'Authoritative, detail-oriented appraisals' },
+  { value: 'casual-seller', label: '😊 Casual Seller', desc: 'Friendly, conversational descriptions' },
+  { value: 'detailed-curator', label: '✨ Pro Curator', desc: 'Editorial, sustainability-focused writing' },
+];
+
+const LENGTHS = [
+  { value: 'short', label: 'Short', desc: '~80 words' },
+  { value: 'medium', label: 'Medium', desc: '~150 words' },
+  { value: 'long', label: 'Long', desc: '~300 words' },
+];
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -13,7 +25,12 @@ export default function AddItemPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // New states for Agentic AI features
+  // AI config states
+  const [aiTemplate, setAiTemplate] = useState('vintage-expert');
+  const [aiLength, setAiLength] = useState('medium');
+  const [hasAppraised, setHasAppraised] = useState(false);
+
+  // AI result states
   const [aiReasoning, setAiReasoning] = useState('');
   const [aiTags, setAiTags] = useState<string[]>([]);
 
@@ -48,12 +65,13 @@ export default function AddItemPage() {
     setAiTags([]);
 
     try {
-      // Calling the new Agentic AI endpoint
-      const response = await aiAPI.analyzeListing({ 
-        title: formData.title, 
-        shortDesc: formData.shortDesc || 'Vintage fashion item' 
+      const response = await aiAPI.analyzeListing({
+        title: formData.title,
+        shortDesc: formData.shortDesc || undefined,
+        template: aiTemplate,
+        length: aiLength,
       });
-      
+
       const data = response.data.data;
 
       // Update form with AI suggestions
@@ -62,13 +80,16 @@ export default function AddItemPage() {
         category: data.category,
         condition: data.condition,
         price: data.price.toString(),
+        shortDesc: data.shortDesc || prev.shortDesc,
+        fullDesc: data.fullDesc || prev.fullDesc,
       }));
 
       // Set AI reasoning and tags for display
       setAiReasoning(data.pricingReasoning);
       setAiTags(data.aiTags);
-      
-      setSuccess('AI Appraiser analyzed your item! Check the reasoning below.');
+      setHasAppraised(true);
+
+      setSuccess(`AI analyzed your item using "${TEMPLATES.find(t => t.value === aiTemplate)?.label}" template!`);
       setTimeout(() => setSuccess(''), 4000);
     } catch (err: any) {
       setError(err.response?.data?.message || 'AI analysis failed. Please try again.');
@@ -87,7 +108,7 @@ export default function AddItemPage() {
         ...formData,
         price: Number(formData.price),
         images: formData.images ? [formData.images] : [],
-        aiTags: aiTags, // Save the AI generated tags to database
+        aiTags: aiTags,
       });
 
       setSuccess('Item added successfully! Redirecting...');
@@ -156,20 +177,78 @@ export default function AddItemPage() {
               >
                 {aiLoading ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
+                ) : hasAppraised ? (
+                  <RotateCcw className="w-5 h-5" />
                 ) : (
                   <Sparkles className="w-5 h-5" />
                 )}
-                {aiLoading ? 'Analyzing...' : 'AI Appraise'}
+                {aiLoading ? 'Analyzing...' : hasAppraised ? 'Regenerate' : 'AI Appraise'}
               </button>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Enter a title and click "AI Appraise" to get smart pricing and auto-classification.
+              Enter a title and click &quot;AI Appraise&quot; to auto-fill pricing, descriptions, category, and tags.
             </p>
           </div>
 
-          {/* AI Reasoning & Tags Display (Agentic Feature UI) */}
+          {/* AI Configuration Panel */}
+          <div className="bg-oat rounded-xl p-5 border border-gray-200">
+            <div className="flex items-center gap-2 mb-4">
+              <Settings2 className="w-5 h-5 text-forest" />
+              <h4 className="font-heading font-semibold text-forest">AI Generation Settings</h4>
+            </div>
+            
+            {/* Template Selector */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Writing Style / Prompt Template
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {TEMPLATES.map((t) => (
+                  <button
+                    key={t.value}
+                    type="button"
+                    onClick={() => setAiTemplate(t.value)}
+                    className={`text-left p-3 rounded-lg border-2 transition-all text-sm ${
+                      aiTemplate === t.value
+                        ? 'border-terracotta bg-terracotta/5 shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className="font-semibold text-forest">{t.label}</div>
+                    <div className="text-xs text-gray-500 mt-0.5">{t.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Length Selector */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Output Length
+              </label>
+              <div className="flex gap-2">
+                {LENGTHS.map((l) => (
+                  <button
+                    key={l.value}
+                    type="button"
+                    onClick={() => setAiLength(l.value)}
+                    className={`flex-1 p-3 rounded-lg border-2 transition-all text-sm text-center ${
+                      aiLength === l.value
+                        ? 'border-terracotta bg-terracotta/5 shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className="font-semibold text-forest">{l.label}</div>
+                    <div className="text-xs text-gray-500">{l.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* AI Reasoning & Tags Display */}
           {aiReasoning && (
-            <div className="bg-terracotta/10 border border-terracotta/30 rounded-lg p-5 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="bg-terracotta/10 border border-terracotta/30 rounded-lg p-5">
               <h4 className="font-heading font-semibold text-terracotta flex items-center gap-2 mb-3">
                 <Sparkles className="w-5 h-5" /> AI Appraiser Analysis
               </h4>
@@ -177,7 +256,7 @@ export default function AddItemPage() {
               <div className="mb-4">
                 <p className="text-sm font-medium text-gray-700 mb-1">Pricing Reasoning:</p>
                 <p className="text-sm text-gray-600 italic bg-white p-3 rounded border border-terracotta/20">
-                  "{aiReasoning}"
+                  &quot;{aiReasoning}&quot;
                 </p>
               </div>
               
@@ -193,7 +272,7 @@ export default function AddItemPage() {
               </div>
               
               <p className="text-xs text-gray-500 mt-3">
-                💡 Tip: You can still manually edit the price, category, and description above before submitting.
+                💡 Tip: You can edit any field below before submitting. Click &quot;Regenerate&quot; with different settings to get a fresh analysis.
               </p>
             </div>
           )}

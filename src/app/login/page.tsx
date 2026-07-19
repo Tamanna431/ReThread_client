@@ -39,11 +39,11 @@ export default function LoginPage() {
     }
   };
 
-  // ✅ Requirement অনুযায়ী: Auto-fill credentials
+  // ✅ Requirement: Auto-fill credentials
   const handleDemoLogin = () => {
     setFormData({
-      email: 'tamanna@test.com', // অথবা 'demo@rethread.com' (যদি seed script রান করে থাকেন)
-      password: '123456',        // অথবা 'demo123'
+      email: 'demo@rethread.com',
+      password: 'demo123',
     });
   };
 
